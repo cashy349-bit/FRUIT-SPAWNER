@@ -106,6 +106,7 @@ local main = Instance.new("Frame")
 main.Size = UDim2.fromOffset(620, 460)
 main.Position = UDim2.new(0.5, -310, 0.5, -230)
 main.BackgroundColor3 = Color3.fromRGB(20, 20, 26)
+main.ZIndex = 10
 main.BorderSizePixel = 0
 main.Parent = gui
 
@@ -145,6 +146,7 @@ search.Text = ""
 search.ClearTextOnFocus = false
 search.TextColor3 = Color3.new(1, 1, 1)
 search.BackgroundColor3 = Color3.fromRGB(32, 32, 40)
+search.ZIndex = 20
 search.BorderSizePixel = 0
 search.Parent = main
 
@@ -154,6 +156,7 @@ local list = Instance.new("ScrollingFrame")
 list.Size = UDim2.fromOffset(280, 350)
 list.Position = UDim2.fromOffset(15, 100)
 list.BackgroundColor3 = Color3.fromRGB(25, 25, 32)
+list.ZIndex = 20
 list.BorderSizePixel = 0
 list.ScrollBarThickness = 5
 list.AutomaticCanvasSize = Enum.AutomaticSize.Y
@@ -207,6 +210,7 @@ local function createButton(fruitName)
     button.Font = Enum.Font.GothamMedium
     button.TextColor3 = Color3.new(1, 1, 1)
     button.BackgroundColor3 = Color3.fromRGB(35, 35, 45)
+    button.ZIndex = 21
     button.BorderSizePixel = 0
     button.Parent = list
 
