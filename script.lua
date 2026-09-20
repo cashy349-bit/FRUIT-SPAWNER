@@ -61,7 +61,7 @@ selected.TextScaled = true
 selected.Parent = frame -- External dependency: RemoteEvent/RemoteFunction named "SpawnFruit"
 local SpawnFruitRemote
 do local candidate = ReplicatedStorage:FindFirstChild(SPAWN_REMOTE_NAME) if not candidate then -- Wait for it if it doesn't exist yet
- candidate = ReplicatedStorage:WaitForChild(SPAWN_REMOTE_NAME) end SpawnFruitRemote = candidate
+ candidate = ReplicatedStorage:FindFirstChild(SPAWN_REMOTE_NAME) end SpawnFruitRemote = candidate
 end if not SpawnFruitRemote then
 	warn(("Missing dependency: ReplicatedStorage.%s"):format(SPAWN_REMOTE_NAME)) return
 end -- Selection handling / Button creation
@@ -187,6 +187,15 @@ preview.Image = ""
 preview.Parent = main
 
 Instance.new("UICorner", preview).CornerRadius = UDim.new(0, 10)
+
+local fruits = {
+    "Rocket", "Spin", "Blade", "Spring", "Bomb", "Smoke", "Spike",
+    "Flame", "Falcon", "Ice", "Sand", "Dark", "Diamond", "Light",
+    "Rubber", "Barrier", "Ghost", "Magma", "Quake", "Buddha", "Love",
+    "Spider", "Sound", "Phoenix", "Portal", "Rumble", "Pain", "Blizzard",
+    "Gravity", "Mammoth", "T-Rex", "Dough", "Shadow", "Venom", "Control",
+    "Spirit", "Leopard", "Yeti", "Kitsune", "Gas", "Dragon"
+}
 
 local function createButton(fruitName)
     local button = Instance.new("TextButton")
