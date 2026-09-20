@@ -420,3 +420,191 @@ search:GetPropertyChangedSignal("Text"):Connect(function()
 end)
 
 print("Additional Fruit Selector UI loaded.")
+--==================================================
+-- ADDITIONAL MINIMIZABLE FRUIT SELECTOR UI
+--==================================================
+
+local Players = game:GetService("Players")
+local player = Players.LocalPlayer
+if not player then return end
+
+local playerGui = player:WaitForChild("PlayerGui")
+
+local old = playerGui:FindFirstChild("MinimizableFruitSelector")
+if old then
+    old:Destroy()
+end
+
+local fruitsUI = {
+    "Rocket","Spin","Blade","Spring","Bomb","Smoke","Spike",
+    "Flame","Eagle","Ice","Sand","Dark","Diamond","Light",
+    "Rubber","Ghost","Magma","Quake","Buddha","Love",
+    "Creation","Spider","Sound","Phoenix","Portal","Lightning",
+    "Pain","Blizzard","Gravity","Mammoth","T-Rex","Dough",
+    "Shadow","Venom","Gas","Spirit","Tiger","Yeti",
+    "Kitsune","Control","Dragon"
+}
+
+local gui = Instance.new("ScreenGui")
+gui.Name = "MinimizableFruitSelector"
+gui.ResetOnSpawn = false
+gui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
+gui.Parent = playerGui
+
+local main = Instance.new("Frame")
+main.Size = UDim2.fromOffset(600, 430)
+main.Position = UDim2.new(0.5, -300, 0.5, -215)
+main.BackgroundColor3 = Color3.fromRGB(20,20,28)
+main.BorderSizePixel = 0
+main.Parent = gui
+
+Instance.new("UICorner", main).CornerRadius = UDim.new(0,12)
+
+local title = Instance.new("TextLabel")
+title.Size = UDim2.new(1,-110,0,45)
+title.Position = UDim2.fromOffset(15,5)
+title.BackgroundTransparency = 1
+title.Text = "🍎 Fruit Selector"
+title.TextColor3 = Color3.new(1,1,1)
+title.TextSize = 21
+title.Font = Enum.Font.GothamBold
+title.TextXAlignment = Enum.TextXAlignment.Left
+title.Parent = main
+
+local minimize = Instance.new("TextButton")
+minimize.Size = UDim2.fromOffset(40,35)
+minimize.Position = UDim2.new(1,-95,0,8)
+minimize.Text = "−"
+minimize.TextSize = 24
+minimize.TextColor3 = Color3.new(1,1,1)
+minimize.BackgroundColor3 = Color3.fromRGB(70,70,85)
+minimize.BorderSizePixel = 0
+minimize.Parent = main
+
+Instance.new("UICorner", minimize).CornerRadius = UDim.new(0,7)
+
+local close = Instance.new("TextButton")
+close.Size = UDim2.fromOffset(40,35)
+close.Position = UDim2.new(1,-50,0,8)
+close.Text = "×"
+close.TextSize = 24
+close.TextColor3 = Color3.new(1,1,1)
+close.BackgroundColor3 = Color3.fromRGB(180,55,55)
+close.BorderSizePixel = 0
+close.Parent = main
+
+Instance.new("UICorner", close).CornerRadius = UDim.new(0,7)
+
+local content = Instance.new("Frame")
+content.Name = "Content"
+content.Position = UDim2.fromOffset(0,50)
+content.Size = UDim2.new(1,0,1,-50)
+content.BackgroundTransparency = 1
+content.Parent = main
+
+local search = Instance.new("TextBox")
+search.Size = UDim2.fromOffset(260,36)
+search.Position = UDim2.fromOffset(15,10)
+search.PlaceholderText = "Search fruit..."
+search.Text = ""
+search.ClearTextOnFocus = false
+search.TextColor3 = Color3.new(1,1,1)
+search.PlaceholderColor3 = Color3.fromRGB(160,160,160)
+search.BackgroundColor3 = Color3.fromRGB(35,35,45)
+search.BorderSizePixel = 0
+search.TextSize = 14
+search.Font = Enum.Font.Gotham
+search.Parent = content
+
+Instance.new("UICorner", search).CornerRadius = UDim.new(0,7)
+
+local list = Instance.new("ScrollingFrame")
+list.Size = UDim2.fromOffset(260,300)
+list.Position = UDim2.fromOffset(15,55)
+list.BackgroundColor3 = Color3.fromRGB(28,28,36)
+list.BorderSizePixel = 0
+list.ScrollBarThickness = 6
+list.AutomaticCanvasSize = Enum.AutomaticSize.Y
+list.CanvasSize = UDim2.new()
+list.Parent = content
+
+Instance.new("UICorner", list).CornerRadius = UDim.new(0,8)
+
+local layout = Instance.new("UIListLayout")
+layout.Padding = UDim.new(0,4)
+layout.Parent = list
+
+local selected = Instance.new("TextLabel")
+selected.Size = UDim2.fromOffset(280,50)
+selected.Position = UDim2.fromOffset(300,40)
+selected.BackgroundTransparency = 1
+selected.Text = "Selected: None"
+selected.TextColor3 = Color3.new(1,1,1)
+selected.TextSize = 20
+selected.Font = Enum.Font.GothamBold
+selected.TextWrapped = true
+selected.Parent = content
+
+local function createFruitButton(name)
+    local button = Instance.new("TextButton")
+    button.Name = name
+    button.Size = UDim2.new(1,-10,0,32)
+    button.BackgroundColor3 = Color3.fromRGB(40,40,52)
+    button.BorderSizePixel = 0
+    button.Text = name
+    button.TextColor3 = Color3.new(1,1,1)
+    button.TextSize = 14
+    button.Font = Enum.Font.GothamMedium
+    button.Parent = list
+
+    Instance.new("UICorner", button).CornerRadius = UDim.new(0,6)
+
+    button.Activated:Connect(function()
+        selected.Text = "Selected: " .. name
+        print("Selected fruit:", name)
+    end)
+end
+
+local function refresh(filter)
+    for _, child in ipairs(list:GetChildren()) do
+        if child:IsA("TextButton") then
+            child:Destroy()
+        end
+    end
+
+    filter = string.lower(filter or "")
+
+    for _, name in ipairs(fruitsUI) do
+        if filter == "" or string.find(string.lower(name), filter, 1, true) then
+            createFruitButton(name)
+        end
+    end
+end
+
+refresh("")
+
+search:GetPropertyChangedSignal("Text"):Connect(function()
+    refresh(search.Text)
+end)
+
+local minimized = false
+
+minimize.Activated:Connect(function()
+    minimized = not minimized
+
+    if minimized then
+        content.Visible = false
+        main.Size = UDim2.fromOffset(600,50)
+        minimize.Text = "+"
+    else
+        content.Visible = true
+        main.Size = UDim2.fromOffset(600,430)
+        minimize.Text = "−"
+    end
+end)
+
+close.Activated:Connect(function()
+    gui:Destroy()
+end)
+
+print("Minimizable Fruit Selector loaded.")
