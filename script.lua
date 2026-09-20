@@ -58,18 +58,22 @@ selected.Text = "Selected: None"
 selected.TextColor3 = Color3.new(1, 1, 1)
 selected.BackgroundTransparency = 1
 selected.TextScaled = true
-selected.Parent = frame -- External dependency: RemoteEvent/RemoteFunction named "SpawnFruit"
-local SpawnFruitRemote
-do local candidate = ReplicatedStorage:FindFirstChild(SPAWN_REMOTE_NAME) if not candidate then -- Wait for it if it doesn't exist yet
- candidate = ReplicatedStorage:FindFirstChild(SPAWN_REMOTE_NAME) end SpawnFruitRemote = candidate
-end if not SpawnFruitRemote then
-	warn(("Missing dependency: ReplicatedStorage.%s"):format(SPAWN_REMOTE_NAME)) return
-end -- Selection handling / Button creation
-for _, fruitName in ipairs(fruits) do local button = Instance.new("TextButton") button.Name = fruitName button.Size = UDim2.new(1, 0, 0, 32) button.Text = fruitName
-	button.TextColor3 = Color3.new(1, 1, 1)
-	button.BackgroundColor3 = Color3.fromRGB(60, 60, 70) button.BorderSizePixel = 0 button.AutoButtonColor = true button.Parent = listBox 	button.Activated:Connect(function()
- -- Update UI selected.Text = "Selected: " .. fruitName print("Selected fruit:", fruitName)  -- External dependency behavior: -- If SpawnFruitRemote is a RemoteEvent, FireServer(fruitName). 	-- If it's a RemoteFunction, InvokeServer(fruitName).
-		if SpawnFruitRemote:IsA("RemoteEvent") then 	SpawnFruitRemote:FireServer(fruitName) elseif SpawnFruitRemote:IsA("RemoteFunction") then 	SpawnFruitRemote:InvokeServer(fruitName) 	else  warn(("SpawnFruit dependency exists but is not RemoteEvent/RemoteFunction. Class=%s"):format(SpawnFruitRemote.ClassName)) end end)
+selected.Parent = frame -- UI-only selection handling
+for _, fruitName in ipairs(fruits) do
+    local button = Instance.new("TextButton")
+    button.Name = fruitName
+    button.Size = UDim2.new(1, 0, 0, 32)
+    button.Text = fruitName
+    button.TextColor3 = Color3.new(1, 1, 1)
+    button.BackgroundColor3 = Color3.fromRGB(60, 60, 70)
+    button.BorderSizePixel = 0
+    button.AutoButtonColor = true
+    button.Parent = listBox
+
+    button.Activated:Connect(function()
+        selected.Text = "Selected: " .. fruitName
+        print("Selected fruit:", fruitName)
+    end)
 end
 --==================================================
 -- ADDITIONAL FRUIT SELECTOR UI
