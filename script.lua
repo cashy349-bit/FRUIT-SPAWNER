@@ -101,6 +101,11 @@ if oldUI then
     oldUI:Destroy()
 end
 
+local oldFruitMenu = playerGui:FindFirstChild("FruitMenu")
+if oldFruitMenu then
+    oldFruitMenu:Destroy()
+end
+
 local gui = Instance.new("ScreenGui")
 gui.Name = "FruitSelectorUI"
 gui.ResetOnSpawn = false
@@ -280,6 +285,11 @@ if oldUI then
     oldUI:Destroy()
 end
 
+local oldFruitMenu = playerGui:FindFirstChild("FruitMenu")
+if oldFruitMenu then
+    oldFruitMenu:Destroy()
+end
+
 local gui = Instance.new("ScreenGui")
 gui.Name = "FruitSelectorUI"
 gui.ResetOnSpawn = false
@@ -444,6 +454,11 @@ local fruitsUI = {
     "Shadow","Venom","Gas","Spirit","Tiger","Yeti",
     "Kitsune","Control","Dragon"
 }
+
+local oldFruitMenu = playerGui:FindFirstChild("FruitMenu")
+if oldFruitMenu then
+    oldFruitMenu:Destroy()
+end
 
 local gui = Instance.new("ScreenGui")
 gui.Name = "MinimizableFruitSelector"
