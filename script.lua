@@ -1,4 +1,3 @@
-```lua
 -- Services
 local Players = game:GetService("Players")
 local ReplicatedStorage = game:GetService("ReplicatedStorage") -- Configuration
@@ -72,7 +71,6 @@ for _, fruitName in ipairs(fruits) do local button = Instance.new("TextButton") 
  -- Update UI selected.Text = "Selected: " .. fruitName print("Selected fruit:", fruitName)  -- External dependency behavior: -- If SpawnFruitRemote is a RemoteEvent, FireServer(fruitName). 	-- If it's a RemoteFunction, InvokeServer(fruitName).
 		if SpawnFruitRemote:IsA("RemoteEvent") then 	SpawnFruitRemote:FireServer(fruitName) elseif SpawnFruitRemote:IsA("RemoteFunction") then 	SpawnFruitRemote:InvokeServer(fruitName) 	else  warn(("SpawnFruit dependency exists but is not RemoteEvent/RemoteFunction. Class=%s"):format(SpawnFruitRemote.ClassName)) end end)
 end
-```
 --==================================================
 -- ADDITIONAL FRUIT SELECTOR UI
 -- Existing script above remains unchanged.
